@@ -24,7 +24,13 @@
     {% endblock %}
 
     <footer>
-        <p>version=1.0 Author: Tomasz Gałązka. All rights reserved.</p>
+        <p>version=1.0 Author: Tomasz Gałązka. All rights reserved.
+            {% if request.user.is_authenticated %}
+                Logged user: {{ request.user.username }} <a href="{% url 'auth_ex:logout-user' %}">Logout</a>
+            {% else %}
+                You are not logged in: <a href="{% url 'auth_ex:login-user' %}">Login</a>
+            {% endif %}
+        </p>
     </footer>
 </body>
 </html>
