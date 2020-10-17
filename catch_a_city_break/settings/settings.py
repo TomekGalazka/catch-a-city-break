@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'city_breaks_app',
+    'auth_ex',
 ]
 
 MIDDLEWARE = [
