@@ -14,13 +14,7 @@ class RegisterUserView(FormView):
     success_url = reverse_lazy('index')
 
     def form_valid(self, form):
-        username = form.cleaned_data['username']
-        email = form.cleaned_data['email']
-        password = form.cleaned_data['password']
-        repeat_password = form.cleaned_data['repeat_password']
-
-        if password == repeat_password:
-            user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password)
         return super().form_valid(form)
 
 
