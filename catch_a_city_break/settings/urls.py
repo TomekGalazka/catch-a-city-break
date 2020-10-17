@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from city_breaks_app import views as CityBreakView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', CityBreakView.IndexView.as_view(), name='index'),
     path('city-breaks/', include('city_breaks_app.urls')),
     path('auth/', include('auth_ex.urls')),
 

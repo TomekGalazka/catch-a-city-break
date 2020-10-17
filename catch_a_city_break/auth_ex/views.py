@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from django.urls import  reverse_lazy
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView
 
@@ -11,7 +11,7 @@ from .forms import RegisterUserForm, LoginUserForm
 class RegisterUserView(FormView):
     template_name = 'auth_ex/registration.html'
     form_class = RegisterUserForm
-    success_url = reverse_lazy('city_breaks_app:index')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         username = form.cleaned_data['username']
@@ -27,7 +27,7 @@ class RegisterUserView(FormView):
 class LoginUserView(FormView):
     template_name = 'auth_ex/login.html'
     form_class = LoginUserForm
-    success_url = reverse_lazy('city_breaks_app:index')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         request = self.request

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{%  load static %}
+
+    {% block body %}
+        <h2>Welcome to my webpage.</h2>
+        <li>
+            <a href="">Destinations</a>
+        </li>
+        <li>
+            <a href="">Activity types</a>
+        </li>
+        <li>
+            <a href="{% url 'auth_ex:register-user' %}">Register</a>
+        </li>
+        <li>
+            <a href="{% url 'auth_ex:login-user' %}">Login</a>
+        </li>
+        <li>
+            <a href="">Go to my plan</a>
+        </li>
+        <li>
+            <a href="">Where do you want to go?</a>
+        </li>
+    {% endblock %}
