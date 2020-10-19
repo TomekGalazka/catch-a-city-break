@@ -9,6 +9,9 @@ from .forms import RegisterUserForm, LoginUserForm
 
 
 class RegisterUserView(FormView):
+    """
+    Register as a user, provide username, email and password
+    """
     template_name = 'auth_ex/registration.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('index')
@@ -23,9 +26,11 @@ class RegisterUserView(FormView):
 
 
 class LoginUserView(FormView):
+    """
+    Allows to login as a user with a username and password
+    """
     template_name = 'auth_ex/login.html'
     form_class = LoginUserForm
-    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         request = self.request
@@ -36,6 +41,8 @@ class LoginUserView(FormView):
         login(request, user)
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return self.request.GET.get('next', reverse_lazy('index'))
 
 class LogoutUserView(View):
     def get(self, request, *args, **kwargs):

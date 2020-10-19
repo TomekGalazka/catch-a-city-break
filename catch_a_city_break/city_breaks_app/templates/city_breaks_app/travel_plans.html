@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+    <ul>
+        {% for plan in plans %}
+            <li><a href="{% url 'city_breaks_app:travel-plan-details' plan.pk %}">{{ plan.name }}</a></li>
+        {% empty %}
+            <p>
+                You have not created any plans or you are not logged in.
+                <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>
+            </p>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

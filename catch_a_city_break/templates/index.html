@@ -16,7 +16,10 @@
             <a href="{% url 'auth_ex:login-user' %}">Login</a>
         </li>
         <li>
-            <a href="">Go to my plan</a>
+            <a href="{% url 'city_breaks_app:travel-plan-create' %}?next={{ request.path|urlencode }}">Create my Travel Plan</a>
+        </li>
+        <li>
+            <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my plans</a>
         </li>
         <li>
             <a href="">Where do you want to go?</a>
