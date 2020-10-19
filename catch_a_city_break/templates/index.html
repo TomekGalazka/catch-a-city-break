@@ -22,6 +22,6 @@
             <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my plans</a>
         </li>
         <li>
-            <a href="">Where do you want to go?</a>
+            <a href="{% url 'city_breaks_app:select-activity' %}?next={{ request.path|urlencode }}">Where do you want to go?</a>
         </li>
     {% endblock %}

@@ -2,10 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView
 from django.urls import reverse_lazy
 
-from .forms import CreateTravelPlanForm
+from .forms import ActivitySelectForm
 from .models import TravelPlan
 
 
@@ -43,10 +43,10 @@ class TravelPlanDetailView(View):
         return render(request, 'city_breaks_app/travel_plan_details.html', {'plan': plan})
 
 
-# class WhereDoYouGoView(FormView):
-#     template_name = 'city_breaks_app/wheredoyougo.html'
-#     form_class = WhereDoYouGoForm
-#     success_url = reverse_lazy('city_breaks_app:destination_choice')
-#
-#     def form_valid(self, form):
-#         pass
+class ActivitySelectView(LoginRequiredMixin, FormView):
+    template_name = 'city_breaks_app/select_activity.html'
+    form_class = ActivitySelectForm
+    success_url = reverse_lazy('city_breaks_app:select-activity')
+
+    def form_valid(self, form):
+        pass
