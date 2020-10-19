@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import CreateView, FormView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
-from .forms import ActivitySelectForm
-from .models import TravelPlan, Activities
+from .forms import ActivitySelectForm, AddActivityToPlan
+from .models import TravelPlan, Activities, TravelPlanActivities, WeekDay
 
 
 class IndexView(View):
@@ -45,7 +45,12 @@ class TravelPlansView(View):
 class TravelPlanDetailView(View):
     def get(self, request, *args, **kwargs):
         plan = TravelPlan.objects.get(pk=kwargs['plan_id'])
-        return render(request, 'city_breaks_app/travel_plan_details.html', {'plan': plan})
+        plan_activities = plan.travelplanactivities_set.all().order_by('week_day', 'time')
+        ctx = {
+            'plan': plan,
+            'plan_activities': plan_activities
+        }
+        return render(request, 'city_breaks_app/travel_plan_details.html', ctx)
 
 
 class ActivitySelectView(LoginRequiredMixin, View):
@@ -67,18 +72,34 @@ class ActivitySelectView(LoginRequiredMixin, View):
         else:
             return render(request, 'city_breaks_app/select_activity.html', {'form': form})
 
-    # template_name = 'city_breaks_app/select_activity.html'
-    # form_class = ActivitySelectForm
-    # success_url = reverse_lazy('city_breaks_app:select-activity')
 
-    # def form_valid(self, form):
-    #     city = form.cleaned_data['city']
-    #     activity_type = form.cleaned_data['activity_type']
-    #     return super().form_valid(form)
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['selected_activities'] = Activities.objects.filter(city=city, activity_type=activity_type)
-    #     return context
+class AddActivityToPlanView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        chosen_activity_id = kwargs['activity_id']
+        form = AddActivityToPlan(user=request.user)
+        ctx = {
+            'form': form,
+            'chosen_activity': chosen_activity_id
+        }
+        return render(request, 'city_breaks_app/add_activity_to_plan.html', ctx)
 
+    def post(self, request, *args, **kwargs):
+        form = AddActivityToPlan(request.POST, user=request.user)
+        chosen_activity_id = kwargs['activity_id']
+        chosen_activity = Activities.objects.get(pk=chosen_activity_id)
+        if form.is_valid():
+            user = request.user
+            travel_plan = form.cleaned_data['travel_plan']
+            week_day_name = form.cleaned_data['week_day']
+            time = form.cleaned_data['time']
 
+            week_day = WeekDay.objects.get(name=week_day_name)
+
+            register_activity = TravelPlanActivities.objects.create(
+                travel_plan=travel_plan,
+                activities=chosen_activity,
+                week_day=week_day,
+                time=time,
+            )
+            register_activity.user.add(user)
+            return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': travel_plan.pk}))

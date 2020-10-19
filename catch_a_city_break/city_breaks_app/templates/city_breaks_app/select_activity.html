@@ -13,7 +13,7 @@
                 <li>
                     {{ activity.name }}
                     <a href="">Details</a>
-                    <a href="">Add to Plan</a>
+                    <a href="{% url 'city_breaks_app:add-activity-to-plan' activity.pk %}">Add to Travel Plan</a>
                 </li>
             {% empty %}
                 <p>There are no activities to be displayed.</p>

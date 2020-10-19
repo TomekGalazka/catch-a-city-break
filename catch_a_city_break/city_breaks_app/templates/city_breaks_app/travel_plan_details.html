@@ -3,9 +3,11 @@
 
 {% block body %}
 
-    <ul>
-        <li>{{ plan.name }}</li>
-        <li>{{ plan.description }}</li>
-    </ul>
+    <h1>{{ plan.name }}</h1>
+    <h3>{{ plan.description }}</h3>
+
+        {% for activity in plan_activities %}
+            <p>{{ activity.week_day }} {{ activity.time }} {{ activity.activities.name }}</p>
+        {% endfor %}
 
 {% endblock %}

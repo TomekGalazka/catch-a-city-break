@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
@@ -36,10 +37,65 @@ class ActivitySelectForm(forms.Form):
     activity_type = forms.ChoiceField(widget=forms.Select, choices=TYPE)
     city = forms.ChoiceField(widget=forms.Select, choices=CITIES)
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     city = cleaned_data['city']
-    #     activity_type = cleaned_data['activity_type']
-    #     cleaned_data['selected_activities'] = Activities.objects.filter(city=city, activity_type=activity_type)
-    #
-    #     return cleaned_data['selected_activities']
+
+class AddActivityToPlan(forms.Form):
+    MONDAY = 'MON'
+    TUESDAY = 'TUE'
+    WEDNESDAY = 'WED'
+    THURSDAY = 'THU'
+    FRIDAY = 'FRI'
+    SATURDAY = 'SAT'
+    SUNDAY = 'SUN'
+    DAYS = [
+        (MONDAY, 'Monday'),
+        (TUESDAY, 'Tuesday'),
+        (WEDNESDAY, 'Wednesday'),
+        (THURSDAY, 'Thursday'),
+        (FRIDAY, 'Friday'),
+        (SATURDAY, 'Saturday'),
+        (SUNDAY, 'Sunday'),
+    ]
+    HOURS = [
+        (1, '1:00 AM'),
+        (2, '2:00 AM'),
+        (3, '3:00 AM'),
+        (4, '4:00 AM'),
+        (5, '5:00 AM'),
+        (6, '6:00 AM'),
+        (7, '7:00 AM'),
+        (8, '8:00 AM'),
+        (9, '9:00 AM'),
+        (10, '10:00 AM'),
+        (11, '11:00 AM'),
+        (12, '12:00 PM'),
+        (13, '1:00 PM'),
+        (14, '2:00 PM'),
+        (15, '3:00 PM'),
+        (16, '4:00 PM'),
+        (17, '5:00 PM'),
+        (18, '6:00 PM'),
+        (19, '7:00 PM'),
+        (20, '8:00 PM'),
+        (21, '9:00 PM'),
+        (22, '10:00 PM'),
+        (23, '11:00 PM'),
+        (24, '12:00 AM')
+    ]
+    travel_plan = forms.ModelChoiceField(queryset=TravelPlan.objects.all())
+    week_day = forms.ChoiceField(widget=forms.Select, choices=DAYS)
+    time = forms.ChoiceField(widget=forms.Select, choices=HOURS)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+
+        if self.user:
+            self.fields['travel_plan'].queryset = TravelPlan.objects.filter(user=self.user)
+
+
+    # travel_plan = models.ForeignKey(TravelPlan, on_delete=models.CASCADE)
+    # activities = models.ForeignKey(Activities, on_delete=models.CASCADE)
+    # # order = models.IntegerField()
+    # week_day = models.ForeignKey(WeekDay, on_delete=models.CASCADE)
+    # time = models.IntegerField(choices=HOURS)
+    # user = models.ManyToManyField(User)
