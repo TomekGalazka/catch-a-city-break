@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
-from .models import TravelPlan
+from .models import TravelPlan, Activities
 
 
 class CreateTravelPlanForm(ModelForm):
@@ -38,8 +38,8 @@ class ActivitySelectForm(forms.Form):
 
     # def clean(self):
     #     cleaned_data = super().clean()
-    #     chosen_city = cleaned_data['city']
-    #     chosen_activity_type = cleaned_data['activity_type']
+    #     city = cleaned_data['city']
+    #     activity_type = cleaned_data['activity_type']
+    #     cleaned_data['selected_activities'] = Activities.objects.filter(city=city, activity_type=activity_type)
     #
-    #     if new_plan_name == TravelPlan.objects.filter(name=new_plan_name):
-    #         raise ValidationError('Such plan name already exist. Please choose another name for your plan.')
+    #     return cleaned_data['selected_activities']

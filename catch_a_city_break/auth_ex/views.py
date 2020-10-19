@@ -44,6 +44,7 @@ class LoginUserView(FormView):
     def get_success_url(self):
         return self.request.GET.get('next', reverse_lazy('index'))
 
+
 class LogoutUserView(View):
     def get(self, request, *args, **kwargs):
         logout(request)

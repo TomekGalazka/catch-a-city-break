@@ -4,10 +4,7 @@
     {% block body %}
         <h2>Welcome to my webpage.</h2>
         <li>
-            <a href="">Destinations</a>
-        </li>
-        <li>
-            <a href="">Activity types</a>
+            <a href="{% url 'destination-activities' %}">Destinations and activity types</a>
         </li>
         <li>
             <a href="{% url 'auth_ex:register-user' %}">Register</a>

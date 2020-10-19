@@ -27,9 +27,6 @@ class Activities(models.Model):
     activity_type = models.CharField(max_length=3, choices=TYPE)
     image = models.ImageField()
 
-    def __str__(self):
-        return self.name
-
 
 class TravelPlan (models.Model):
     name = models.CharField(max_length=256)
@@ -37,9 +34,6 @@ class TravelPlan (models.Model):
     created = models.DateTimeField(auto_now_add=True)
     activities = models.ManyToManyField(Activities, through='TravelPlanActivities')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
 
 
 class WeekDay(models.Model):
@@ -61,9 +55,6 @@ class WeekDay(models.Model):
     ]
     name = models.CharField(max_length=3, choices=DAYS)
     order = models.IntegerField(unique=True)
-
-    def __str__(self):
-        return self.name
 
 
 class TravelPlanActivities(models.Model):

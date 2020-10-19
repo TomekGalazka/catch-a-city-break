@@ -6,12 +6,17 @@ from django.views.generic import CreateView, FormView
 from django.urls import reverse_lazy
 
 from .forms import ActivitySelectForm
-from .models import TravelPlan
+from .models import TravelPlan, Activities
 
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
+
+
+class DestinationsActivitiesView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'destinations_activity_types.html')
 
 
 class TravelPlanCreateView(LoginRequiredMixin, CreateView):
@@ -43,10 +48,37 @@ class TravelPlanDetailView(View):
         return render(request, 'city_breaks_app/travel_plan_details.html', {'plan': plan})
 
 
-class ActivitySelectView(LoginRequiredMixin, FormView):
-    template_name = 'city_breaks_app/select_activity.html'
-    form_class = ActivitySelectForm
-    success_url = reverse_lazy('city_breaks_app:select-activity')
+class ActivitySelectView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = ActivitySelectForm()
+        return render(request, 'city_breaks_app/select_activity.html', {'form': form})
 
-    def form_valid(self, form):
-        pass
+    def post(self, request, *args, **kwargs):
+        form = ActivitySelectForm(request.POST)
+        if form.is_valid():
+            city = form.cleaned_data['city']
+            activity_type = form.cleaned_data['activity_type']
+            selected_activities = Activities.objects.filter(city=city, activity_type=activity_type)
+            ctx = {
+                'form': form,
+                'selected_activities': selected_activities
+            }
+            return render(request, 'city_breaks_app/select_activity.html', ctx)
+        else:
+            return render(request, 'city_breaks_app/select_activity.html', {'form': form})
+
+    # template_name = 'city_breaks_app/select_activity.html'
+    # form_class = ActivitySelectForm
+    # success_url = reverse_lazy('city_breaks_app:select-activity')
+
+    # def form_valid(self, form):
+    #     city = form.cleaned_data['city']
+    #     activity_type = form.cleaned_data['activity_type']
+    #     return super().form_valid(form)
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['selected_activities'] = Activities.objects.filter(city=city, activity_type=activity_type)
+    #     return context
+
+
