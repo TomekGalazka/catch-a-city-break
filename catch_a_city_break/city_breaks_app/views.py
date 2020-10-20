@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, DetailView
 from django.urls import reverse_lazy, reverse
 
 from .forms import ActivitySelectForm, AddActivityToPlan
@@ -44,16 +44,23 @@ class TravelPlansView(View):
 
 class TravelPlanDetailView(View):
     def get(self, request, *args, **kwargs):
-        plan = TravelPlan.objects.get(pk=kwargs['plan_id'])
-        plan_activities = plan.travelplanactivities_set.all().order_by('week_day', 'time')
-        ctx = {
-            'plan': plan,
-            'plan_activities': plan_activities
-        }
-        return render(request, 'city_breaks_app/travel_plan_details.html', ctx)
+        user = request.user
+        ctx = {}
+        if user.is_authenticated:
+            plan = TravelPlan.objects.get(pk=kwargs['plan_id'])
+            plan_activities = plan.travelplanactivities_set.all().order_by('week_day', 'time')
+            ctx = {
+                'plan': plan,
+                'plan_activities': plan_activities
+            }
+            return render(request, 'city_breaks_app/travel_plan_details.html', ctx)
+        else:
+            return render(request, 'city_breaks_app/travel_plan_details.html', ctx)
 
 
 class ActivitySelectView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth_ex:login-user')
+
     def get(self, request, *args, **kwargs):
         form = ActivitySelectForm()
         return render(request, 'city_breaks_app/select_activity.html', {'form': form})
@@ -74,6 +81,8 @@ class ActivitySelectView(LoginRequiredMixin, View):
 
 
 class AddActivityToPlanView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth_ex:login-user')
+
     def get(self, request, *args, **kwargs):
         chosen_activity_id = kwargs['activity_id']
         form = AddActivityToPlan(user=request.user)
@@ -103,3 +112,16 @@ class AddActivityToPlanView(LoginRequiredMixin, View):
             )
             register_activity.user.add(user)
             return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': travel_plan.pk}))
+        else:
+            return redirect(reverse('city_breaks_app:add-activity-to-plan', kwargs={'activity_id': chosen_activity_id}))
+
+
+class ActivityDetails(DetailView):
+    model = Activities
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        activity_id = self.kwargs['pk']
+        context['activity'] = Activities.objects.get(pk=activity_id)
+        return context
+

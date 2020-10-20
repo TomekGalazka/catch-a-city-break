@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+    <h1>{{ activity.name }}</h1>
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Duratiton</th>
+            <th>City</th>
+            <th>Activity Type</th>
+            <th>Photo</th>
+        </tr>
+        <tr>
+            <td>{{ activity.description }}</td>
+            <td>{{ activity.duration }}h</td>
+            <td>{{ activity.get_city_display }}</td>
+            <td>{{ activity.get_activity_type_display }}</td>
+            <td><img src="{{ activity.image.url }}"></td>
+        </tr>
+    </table>
+
+{% endblock %}

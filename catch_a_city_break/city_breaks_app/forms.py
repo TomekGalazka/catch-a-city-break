@@ -34,8 +34,8 @@ class ActivitySelectForm(forms.Form):
         (CLASSIC, 'Classic'),
         (CRAZY, 'Crazy')
     ]
-    activity_type = forms.ChoiceField(widget=forms.Select, choices=TYPE)
-    city = forms.ChoiceField(widget=forms.Select, choices=CITIES)
+    activity_type = forms.ChoiceField(widget=forms.Select, choices=TYPE, initial='CLS')
+    city = forms.ChoiceField(widget=forms.Select, choices=CITIES, initial='WAW')
 
 
 class AddActivityToPlan(forms.Form):
@@ -81,9 +81,9 @@ class AddActivityToPlan(forms.Form):
         (23, '11:00 PM'),
         (24, '12:00 AM')
     ]
-    travel_plan = forms.ModelChoiceField(queryset=TravelPlan.objects.all())
-    week_day = forms.ChoiceField(widget=forms.Select, choices=DAYS)
-    time = forms.ChoiceField(widget=forms.Select, choices=HOURS)
+    travel_plan = forms.ModelChoiceField(queryset=TravelPlan.objects.all(), initial='')
+    week_day = forms.ChoiceField(widget=forms.Select, choices=DAYS, initial='MON')
+    time = forms.ChoiceField(widget=forms.Select, choices=HOURS, initial='8')
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
