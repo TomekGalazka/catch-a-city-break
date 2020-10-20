@@ -96,6 +96,8 @@ class AddActivityToPlan(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         travel_plan = cleaned_data['travel_plan']
+        week_day = cleaned_data['week_day']
+        time = cleaned_data['time']
         activity = Activities.objects.get(pk=self.activity_id)
         plan_activities = travel_plan.travelplanactivities_set.all()
 
@@ -107,3 +109,9 @@ class AddActivityToPlan(forms.Form):
             for plan in plan_activities:
                 if activity.city not in plan.activities.city:
                     raise ValidationError('Once you choose a city you cannot simply teleport to another!')
+
+        for plan in plan_activities:
+            if week_day == plan.week_day and time == plan.time:
+                raise ValidationError(
+                    "You've already assigned an activity for this day and this hour. Please choose another."
+                )

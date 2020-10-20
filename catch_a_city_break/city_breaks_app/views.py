@@ -19,6 +19,11 @@ class DestinationsActivitiesView(View):
         return render(request, 'destinations_activity_types.html')
 
 
+class AboutView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'about.html')
+
+
 class TravelPlanCreateView(LoginRequiredMixin, CreateView):
     model = TravelPlan
     fields = ['name', 'description']
@@ -30,7 +35,9 @@ class TravelPlanCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class TravelPlansView(View):
+class TravelPlansView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth_ex:login-user')
+
     def get(self, request, *args, **kwargs):
         user = request.user
         ctx = {}
@@ -118,7 +125,7 @@ class AddActivityToPlanView(LoginRequiredMixin, View):
             return redirect(reverse('city_breaks_app:add-activity-to-plan', kwargs={'activity_id': chosen_activity_id}))
 
 
-class ActivityDetails(LoginRequiredMixin, DetailView):
+class ActivityDetailsView(LoginRequiredMixin, DetailView):
     model = Activities
     login_url = reverse_lazy('auth_ex:login-user')
 
@@ -128,3 +135,7 @@ class ActivityDetails(LoginRequiredMixin, DetailView):
         context['activity'] = Activities.objects.get(pk=activity_id)
         return context
 
+
+class AskForOfferView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'city_breaks_app/ask_for_offer.html')

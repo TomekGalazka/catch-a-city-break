@@ -31,6 +31,7 @@ urlpatterns = [
         CityBreakView.DestinationsActivitiesView.as_view(),
         name='destination-activities'
     ),
+    path('about/', CityBreakView.AboutView.as_view(), name='about'),
 
 ]
 urlpatterns += staticfiles_urlpatterns()

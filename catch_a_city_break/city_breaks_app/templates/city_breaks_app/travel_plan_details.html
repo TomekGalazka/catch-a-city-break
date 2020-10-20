@@ -6,6 +6,7 @@
     <h1>{{ plan.name }}</h1>
     <h3>{{ plan.description }}</h3>
         <p><a href="{% url 'city_breaks_app:select-activity' %}">Return to activity selection page.</a></p>
+        <p><a href="{{request.META.HTTP_REFERER}}">Go back</a></p>
 
             {% regroup plan_activities by week_day.get_name_display as week_day_list %}
             <ul>
@@ -31,17 +32,5 @@
                 </p>
             {% endfor %}
             </ul>
-{##}
-{#        {% for activity in plan_activities %}#}
-{#            <p>#}
-{#                {{ activity.week_day.get_name_display }} {{ activity.get_time_display }} {{ activity.activities.name }}#}
-{#                <a href="{% url 'city_breaks_app:activities-detail' activity.activities.pk %}">Details</a>#}
-{#            </p>#}
-{#        {% empty %}#}
-{#            <p>#}
-{#                You have not created any plans or you are not logged in.#}
-{#                <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>#}
-{#            </p>#}
-{#        {% endfor %}#}
 
 {% endblock %}
