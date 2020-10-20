@@ -7,16 +7,41 @@
     <h3>{{ plan.description }}</h3>
         <p><a href="{% url 'city_breaks_app:select-activity' %}">Return to activity selection page.</a></p>
 
-        {% for activity in plan_activities %}
-            <p>
-                {{ activity.week_day.get_name_display }} {{ activity.get_time_display }} {{ activity.activities.name }}
-                <a href="{% url 'city_breaks_app:activities-detail' activity.activities.pk %}">Details</a>
-            </p>
-        {% empty %}
-            <p>
-                You have not created any plans or you are not logged in.
-                <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>
-            </p>
-        {% endfor %}
+            {% regroup plan_activities by week_day.get_name_display as week_day_list %}
+            <ul>
+            {% for week_day in week_day_list %}
+                <li>
+                    {% filter upper %}
+                    {{ week_day.grouper }}
+                    {% endfilter %}
+                <ul>
+                    {% for activity in week_day.list %}
+                        <li>
+                            {{ activity.get_time_display }}
+                            {{ activity.activities.name }}
+                            <a href="{% url 'city_breaks_app:activities-detail' activity.activities.pk %}">Details</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                </li>
+            {% empty %}
+                <p>
+                    You have not created any plans or you are not logged in.
+                    <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>
+                </p>
+            {% endfor %}
+            </ul>
+{##}
+{#        {% for activity in plan_activities %}#}
+{#            <p>#}
+{#                {{ activity.week_day.get_name_display }} {{ activity.get_time_display }} {{ activity.activities.name }}#}
+{#                <a href="{% url 'city_breaks_app:activities-detail' activity.activities.pk %}">Details</a>#}
+{#            </p>#}
+{#        {% empty %}#}
+{#            <p>#}
+{#                You have not created any plans or you are not logged in.#}
+{#                <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>#}
+{#            </p>#}
+{#        {% endfor %}#}
 
 {% endblock %}

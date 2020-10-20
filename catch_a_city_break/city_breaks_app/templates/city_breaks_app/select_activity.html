@@ -12,7 +12,7 @@
             {% for activity in selected_activities %}
                 <li>
                     {{ activity.name }}
-                    <a href="">Details</a>
+                    <a href="{% url 'city_breaks_app:activities-detail' activity.pk %}">Details</a>
                     <a href="{% url 'city_breaks_app:add-activity-to-plan' activity.pk %}">Add to Travel Plan</a>
                 </li>
             {% empty %}
