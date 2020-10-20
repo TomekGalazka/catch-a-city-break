@@ -11,6 +11,6 @@ urlpatterns = [
     path('select_activity/', views.ActivitySelectView.as_view(), name='select-activity'),
     path('add_activity_to_plan/<int:activity_id>', views.AddActivityToPlanView.as_view(), name='add-activity-to-plan'),
     path('activities_detail/<int:pk>/', views.ActivityDetailsView.as_view(), name='activities-detail'),
-    path('ask_for_offer/', views.AskForOfferView.as_view(), name='ask-for-offer'),
+    path('ask_for_offer/<int:pk>/', views.AskForOfferView.as_view(), name='ask-for-offer'),
 
 ]

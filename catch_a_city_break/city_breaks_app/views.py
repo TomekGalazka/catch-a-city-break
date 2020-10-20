@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -136,6 +137,16 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
         return context
 
 
-class AskForOfferView(View):
+class AskForOfferView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth_ex:login-user')
+
     def get(self, request, *args, **kwargs):
+        user = request.user
+        send_mail(
+            'Request for Offer',
+            'Please prepare your best offer based on attached Travel Plan.',
+            user.email,
+            ['tom3k.galazka@gmail.com'],
+            fail_silently=False,
+        )
         return render(request, 'city_breaks_app/ask_for_offer.html')
