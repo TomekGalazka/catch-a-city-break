@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
-from .models import TravelPlan, Activities
+from .models import TravelPlan, Activities, TravelPlanActivities
 
 
 class CreateTravelPlanForm(ModelForm):
@@ -87,15 +87,23 @@ class AddActivityToPlan(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
+        self.activity_id = kwargs.pop('activity_id')
         super().__init__(*args, **kwargs)
 
         if self.user:
             self.fields['travel_plan'].queryset = TravelPlan.objects.filter(user=self.user)
 
+    def clean(self):
+        cleaned_data = super().clean()
+        travel_plan = cleaned_data['travel_plan']
+        activity = Activities.objects.get(pk=self.activity_id)
+        plan_activities = travel_plan.travelplanactivities_set.all()
 
-    # travel_plan = models.ForeignKey(TravelPlan, on_delete=models.CASCADE)
-    # activities = models.ForeignKey(Activities, on_delete=models.CASCADE)
-    # # order = models.IntegerField()
-    # week_day = models.ForeignKey(WeekDay, on_delete=models.CASCADE)
-    # time = models.IntegerField(choices=HOURS)
-    # user = models.ManyToManyField(User)
+        for plan in plan_activities:
+            if activity.name in plan.activities.name:
+                raise ValidationError('You cannot duplicate activity in travel plan.')
+
+        if plan_activities is not None:
+            for plan in plan_activities:
+                if activity.city not in plan.activities.city:
+                    raise ValidationError('Once you choose a city you cannot simply teleport to another!')

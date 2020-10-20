@@ -42,7 +42,9 @@ class TravelPlansView(View):
             return render(request, 'city_breaks_app/travel_plans.html', ctx)
 
 
-class TravelPlanDetailView(View):
+class TravelPlanDetailView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth_ex:login-user')
+
     def get(self, request, *args, **kwargs):
         user = request.user
         ctx = {}
@@ -85,7 +87,7 @@ class AddActivityToPlanView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         chosen_activity_id = kwargs['activity_id']
-        form = AddActivityToPlan(user=request.user)
+        form = AddActivityToPlan(user=request.user, activity_id=chosen_activity_id)
         ctx = {
             'form': form,
             'chosen_activity': chosen_activity_id
@@ -93,8 +95,8 @@ class AddActivityToPlanView(LoginRequiredMixin, View):
         return render(request, 'city_breaks_app/add_activity_to_plan.html', ctx)
 
     def post(self, request, *args, **kwargs):
-        form = AddActivityToPlan(request.POST, user=request.user)
         chosen_activity_id = kwargs['activity_id']
+        form = AddActivityToPlan(request.POST, user=request.user, activity_id=chosen_activity_id)
         chosen_activity = Activities.objects.get(pk=chosen_activity_id)
         if form.is_valid():
             user = request.user
@@ -116,8 +118,9 @@ class AddActivityToPlanView(LoginRequiredMixin, View):
             return redirect(reverse('city_breaks_app:add-activity-to-plan', kwargs={'activity_id': chosen_activity_id}))
 
 
-class ActivityDetails(DetailView):
+class ActivityDetails(LoginRequiredMixin, DetailView):
     model = Activities
+    login_url = reverse_lazy('auth_ex:login-user')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

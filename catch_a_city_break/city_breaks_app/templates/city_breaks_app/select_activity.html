@@ -2,6 +2,22 @@
 {% load static %}
 
     {% block body %}
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div>
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div>
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <form action="" method="post">
             {% csrf_token %}
             {{ form }}
@@ -14,6 +30,7 @@
                     {{ activity.name }}
                     <a href="{% url 'city_breaks_app:activities-detail' activity.pk %}">Details</a>
                     <a href="{% url 'city_breaks_app:add-activity-to-plan' activity.pk %}">Add to Travel Plan</a>
+                    <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my travel plans</a>
                 </li>
             {% empty %}
                 <p>There are no activities to be displayed.</p>

@@ -21,4 +21,7 @@
         </tr>
     </table>
 
+    <a href="{{request.META.HTTP_REFERER}}">Go back</a>
+    <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my travel plans</a>
+
 {% endblock %}

@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
 
     {% block body %}
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div>
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div>
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <form action="" method="post">
             {% csrf_token %}
             {{ form }}
             <input type="submit" value="Send">
         </form>
+        <a href="{{request.META.HTTP_REFERER}}">Go back</a>
     {% endblock %}
