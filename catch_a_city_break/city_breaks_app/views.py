@@ -141,10 +141,10 @@ class AskForOfferView(LoginRequiredMixin, View):
     login_url = reverse_lazy('auth_ex:login-user')
 
     def get(self, request, *args, **kwargs):
-        user = request.user
+        user = self.request.user
         send_mail(
             'Request for Offer',
-            'Please prepare your best offer based on attached Travel Plan.',
+            'Please prepare your best offer for me, based on attached Travel Plan.',
             user.email,
             ['tom3k.galazka@gmail.com'],
             fail_silently=False,

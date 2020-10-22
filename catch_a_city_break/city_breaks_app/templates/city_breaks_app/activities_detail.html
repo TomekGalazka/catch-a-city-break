@@ -2,26 +2,18 @@
 
 
 {% block body %}
-
-    <h1>{{ activity.name }}</h1>
-    <table>
-        <tr>
-            <th>Description</th>
-            <th>Duratiton</th>
-            <th>City</th>
-            <th>Activity Type</th>
-            <th>Photo</th>
-        </tr>
-        <tr>
-            <td>{{ activity.description }}</td>
-            <td>{{ activity.duration }}h</td>
-            <td>{{ activity.get_city_display }}</td>
-            <td>{{ activity.get_activity_type_display }}</td>
-            <td><img src="{{ activity.image.url }}"></td>
-        </tr>
-    </table>
-
-    <a href="{{request.META.HTTP_REFERER}}">Go back</a>
-    <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my travel plans</a>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>ACTIVITY NAME: </strong>{{ activity.name }}</li>
+        <li class="list-group-item"><strong>DURATION: </strong>{{ activity.duration }}h</li>
+        <li class="list-group-item"><strong>CITY: </strong>{{ activity.get_city_display }}</li>
+        <li class="list-group-item"><strong>ACTIVITY TYPE: </strong>{{ activity.get_activity_type_display }}</li>
+        <li class="list-group-item">
+            <strong>DESCRIPTION: </strong>
+            <img src="{{ activity.image.url }}" style="float:right" width="500" height="400" class="ml-3">
+            {{ activity.description }}
+        </li>
+    </ul>
+    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary btn-sm mt-3 ml-3" role="button" aria-pressed="true">Go back</a>
+    <a href="{% url 'city_breaks_app:travel-plans' %}" class="btn btn-primary btn-sm mt-3 ml-2" role="button" aria-pressed="true">Go to my travel plans</a>
 
 {% endblock %}

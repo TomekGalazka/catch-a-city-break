@@ -2,7 +2,6 @@
 {% load static %}
 
     {% block body %}
-
         {% if form.errors %}
             {% for field in form %}
                 {% for error in field.errors %}
@@ -17,24 +16,29 @@
                 </div>
             {% endfor %}
         {% endif %}
-
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Send">
-        </form>
-
-        <ul>
+        <div class="container mt-5">
+            <h4 class="mb-4 font-weight-normal">
+                <img src="/static/travel-logo-design.jpg" alt="" width="72" height="72">
+                Where would you like to go?
+            </h4>
+        </div>
+        <div class=" container input-group my-3 mc-sm-2">
+            <form action="" method="post" class="form-inline">
+                    {% csrf_token %}
+                    {{ form }}
+              <button type="submit" class="btn btn-primary mb-2">Browse</button>
+            </form>
+        </div>
+        <ul class="list-group">
             {% for activity in selected_activities %}
-                <li>
+                <li class="list-group-item">
                     {{ activity.name }}
-                    <a href="{% url 'city_breaks_app:activities-detail' activity.pk %}">Details</a>
-                    <a href="{% url 'city_breaks_app:add-activity-to-plan' activity.pk %}">Add to Travel Plan</a>
-                    <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my travel plans</a>
+                    <a href="{% url 'city_breaks_app:activities-detail' activity.pk %}" class="btn btn-primary btn-sm ml-3" role="button" aria-pressed="true">Details</a>
+                    <a href="{% url 'city_breaks_app:add-activity-to-plan' activity.pk %}" class="btn btn-primary btn-sm ml-1" role="button" aria-pressed="true">Add to Travel Plan</a>
+                    <a href="{% url 'city_breaks_app:travel-plans' %}" class="btn btn-primary btn-sm ml-1" role="button" aria-pressed="true">Go to my travel plans</a>
                 </li>
             {% empty %}
-                <p>There are no activities to be displayed.</p>
+                <li class="list-group-item">There are no activities to be displayed.</li>
             {% endfor %}
         </ul>
-
     {% endblock %}

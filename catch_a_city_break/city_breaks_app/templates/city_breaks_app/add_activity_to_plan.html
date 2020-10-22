@@ -16,11 +16,20 @@
                 </div>
             {% endfor %}
         {% endif %}
-
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Send">
-        </form>
-        <a href="{{request.META.HTTP_REFERER}}">Go back</a>
+        <div class="container mt-5">
+            <h4 class="mb-3 font-weight-normal">
+                <img src="/static/travel-logo-design.jpg" alt="" width="72" height="72">
+                Add activity to your plan
+            </h4>
+        </div>
+        <div class=" container input-group my-3 mc-sm-2">
+            <form action="" method="post" class="form-inline">
+                {% csrf_token %}
+                {{ form }}
+            </form>
+            <button type="submit" class="btn btn-primary mb-2">Add activity</button>
+        </div>
+        <div class="container">
+            <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary btn-sm mb-5" role="button" aria-pressed="true">Go back</a>
+        </div>
     {% endblock %}

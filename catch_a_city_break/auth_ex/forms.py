@@ -7,10 +7,15 @@ User = get_user_model()
 
 
 class RegisterUserForm(forms.Form):
-    username = forms.CharField()
-    email = forms.EmailField(widget=forms.EmailInput)
-    password = forms.CharField(widget=forms.PasswordInput)
-    repeat_password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='Username:')
+    email = forms.EmailField(widget=forms.EmailInput, label='E-mail:')
+    password = forms.CharField(widget=forms.PasswordInput, label='Password:')
+    repeat_password = forms.CharField(widget=forms.PasswordInput, label='Repeat Password:')
+
+    username.widget.attrs.update({'class': 'form-control mb-3'})
+    email.widget.attrs.update({'class': 'form-control mb-3'})
+    password.widget.attrs.update({'class': 'form-control mb-3'})
+    repeat_password.widget.attrs.update({'class': 'form-control mb-3'})
 
     def clean(self):
         cleaned_data = super().clean()
@@ -33,8 +38,11 @@ class RegisterUserForm(forms.Form):
 
 
 class LoginUserForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='Username:')
+    password = forms.CharField(widget=forms.PasswordInput, label='Password:')
+
+    username.widget.attrs.update({'class': 'form-control mb-3'})
+    password.widget.attrs.update({'class': 'form-control mb-3'})
 
     def clean(self):
         cleaned_data = super().clean()

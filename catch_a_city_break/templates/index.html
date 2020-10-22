@@ -2,23 +2,66 @@
 {%  load static %}
 
     {% block body %}
-        <h2>Welcome to my webpage.</h2>
-        <li>
-            <a href="{% url 'destination-activities' %}">Destinations and activity types</a>
-        </li>
-        <li>
-            <a href="{% url 'auth_ex:register-user' %}">Register</a>
-        </li>
-        <li>
-            <a href="{% url 'auth_ex:login-user' %}">Login</a>
-        </li>
-        <li>
-            <a href="{% url 'city_breaks_app:travel-plan-create' %}?next={{ request.path|urlencode }}">Create my Travel Plan</a>
-        </li>
-        <li>
-            <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my plans</a>
-        </li>
-        <li>
-            <a href="{% url 'city_breaks_app:select-activity' %}?next={{ request.path|urlencode }}">Where do you want to go?</a>
-        </li>
+
+        <div class="card text-center">
+            <h4 class="card-header"><strong>WELCOME TO THE 'CATCH A CITY BREAK' WEB APP!</strong></h4>
+          <div class="card-body text-center container">
+            <img src="/static/travel-logo-design.jpg" width="400" height="400"
+                        class="d-inline-block align-top rounded-circle" alt="Site logo">
+
+              <h5 class="card-title mb-4">At the <strong>'Catch A City Break'</strong> exciting trips wait for you just around the corner!</h5>
+            <p class="card-text mb-5 text-justify">You're just a few steps from your dream vacation. First, register and login.
+                Then, create your travel plan and voila! You're ready to go. Browse in various activities we prepared
+                for you and when you're ready click 'Ask for offer' button on your travel plan subpage.
+                We will contact you via e-mail within 48 hours.
+            </p>
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-lg-2 col-lg-offset-1 text-center>">
+                    <a href="{% url 'destination-activities' %}" class="btn btn-primary btn-sm">
+                        Destinations and activity types</a>
+                    </div>
+                    <div class="col-lg-2 text-center">
+                        <a href="{% url 'city_breaks_app:travel-plan-create' %}?next={{ request.path|urlencode }}"
+                           class="btn btn-primary btn-sm">Create my Travel Plan</a>
+                    </div>
+                    <div class="col-lg-2 text-center">
+                        <a href="{% url 'city_breaks_app:select-activity' %}?next={{ request.path|urlencode }}"
+                           class="btn btn-primary btn-sm">Where do you want to go?</a>
+                    </div>
+                    <div class="col-lg-2 text-center">
+                        <a href="{% url 'city_breaks_app:travel-plans' %}" class="btn btn-primary">Go to my plans</a>
+                    </div>
+                    <div class="col-lg-2 text-center">
+                        <a href="{% url 'auth_ex:login-user' %}" class="btn btn-primary">Login</a>
+                    </div>
+                    <div class="col-lg-2 text-center">
+                        <a href="{% url 'auth_ex:register-user' %}" class="btn btn-primary">Register</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+{##}
+{##}
+{##}
+{#        <h2>Welcome to my webpage.</h2>#}
+{#        <li>#}
+{#            <a href="{% url 'destination-activities' %}">Destinations and activity types</a>#}
+{#        </li>#}
+{#        <li>#}
+{#            <a href="{% url 'auth_ex:register-user' %}">Register</a>#}
+{#        </li>#}
+{#        <li>#}
+{#            <a href="{% url 'auth_ex:login-user' %}">Login</a>#}
+{#        </li>#}
+{#        <li>#}
+{#            <a href="{% url 'city_breaks_app:travel-plan-create' %}?next={{ request.path|urlencode }}">Create my Travel Plan</a>#}
+{#        </li>#}
+{#        <li>#}
+{#            <a href="{% url 'city_breaks_app:travel-plans' %}">Go to my plans</a>#}
+{#        </li>#}
+{#        <li>#}
+{#            <a href="{% url 'city_breaks_app:select-activity' %}?next={{ request.path|urlencode }}">Where do you want to go?</a>#}
+{#        </li>#}
     {% endblock %}

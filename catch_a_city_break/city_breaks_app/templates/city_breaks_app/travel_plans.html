@@ -3,15 +3,25 @@
 
 {% block body %}
 
-    <ul>
-        {% for plan in plans %}
-            <li><a href="{% url 'city_breaks_app:travel-plan-details' plan.pk %}">{{ plan.name }}</a></li>
-        {% empty %}
-            <p>
-                You have not created any plans or you are not logged in.
-                <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>
-            </p>
-        {% endfor %}
+    <div class="container mt-5 text-center">
+            <h3 class="mb-4">
+                <img src="/static/travel-logo-design.jpg" alt="" width="72" height="72">
+                <u>YOUR TRAVEL PLANS</u>
+            </h3>
+    </div>
+    <ul class="list-group">
+            {% for plan in plans %}
+                <li class="list-group-item">
+                    <h5>{{ plan.name }}
+                        <a href="{% url 'city_breaks_app:travel-plan-details' plan.pk %}" class="btn btn-primary ml-3" role="button" aria-pressed="true">Go to plan</a>
+                    </h5>
+                </li>
+            {% empty %}
+                <li class="list-group-item">
+                    You have not created any plans or you are not logged in.
+                    <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>
+                </li>
+            {% endfor %}
     </ul>
-    <a href="{{request.META.HTTP_REFERER}}">Go back</a>
+    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary btn-sm mt-3 m-3" role="button" aria-pressed="true">Go back</a>
 {% endblock %}

@@ -16,10 +16,20 @@
                 </div>
             {% endfor %}
         {% endif %}
-
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Send">
-        </form>
+        <div class="container mt-5">
+            <h4 class="mb-4 font-weight-normal">
+                <img src="/static/travel-logo-design.jpg" alt="" width="72" height="72">
+                CREATE NEW TRAVEL PLAN
+            </h4>
+        </div>
+        <div class="container">
+            <form action="" method="post">
+                <div class="form-group col-md-3">
+                    {% csrf_token %}
+                    {{ form }}
+                </div>
+                <button type="submit" class="btn btn-primary mb-3">Submit</button>
+                <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary btn-sm mb-3" role="button" aria-pressed="true">Go back</a>
+            </form>
+        </div>
     {% endblock %}

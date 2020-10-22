@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 
 from .models import TravelPlan, Activities, TravelPlanActivities
 
@@ -10,6 +10,14 @@ class CreateTravelPlanForm(ModelForm):
     class Meta:
         model = TravelPlan
         fields = ['name', 'description']
+        widgets = {
+            'description': Textarea(attrs={'cols': 1, 'rows': 1}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control mb-3 mb-3'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control mb-3'})
 
     def clean(self):
         cleaned_data = super().clean()
@@ -34,8 +42,11 @@ class ActivitySelectForm(forms.Form):
         (CLASSIC, 'Classic'),
         (CRAZY, 'Crazy')
     ]
-    activity_type = forms.ChoiceField(widget=forms.Select, choices=TYPE, initial='CLS')
-    city = forms.ChoiceField(widget=forms.Select, choices=CITIES, initial='WAW')
+    activity_type = forms.ChoiceField(widget=forms.Select, choices=TYPE, initial='CLS', label='Activity Type')
+    city = forms.ChoiceField(widget=forms.Select, choices=CITIES, initial='WAW', label='City')
+
+    activity_type.widget.attrs.update({'class': 'form-control mb-2 mr-sm-2'})
+    city.widget.attrs.update({'class': 'form-control mb-2 mr-sm-2'})
 
 
 class AddActivityToPlan(forms.Form):
@@ -84,6 +95,10 @@ class AddActivityToPlan(forms.Form):
     travel_plan = forms.ModelChoiceField(queryset=TravelPlan.objects.all(), initial='')
     week_day = forms.ChoiceField(widget=forms.Select, choices=DAYS, initial='MON')
     time = forms.ChoiceField(widget=forms.Select, choices=HOURS, initial='8')
+
+    travel_plan.widget.attrs.update({'class': 'form-control mb-2 mr-sm-2'})
+    week_day.widget.attrs.update({'class': 'form-control mb-2 mr-sm-2'})
+    time.widget.attrs.update({'class': 'form-control mb-2 mr-sm-2'})
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
