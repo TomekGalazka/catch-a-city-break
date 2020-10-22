@@ -2,35 +2,43 @@
 
 
 {% block body %}
-
-    <h1>{{ plan.name }}</h1>
-    <h3>{{ plan.description }}</h3>
-        <p><a href="{% url 'city_breaks_app:select-activity' %}">Return to activity selection page.</a></p>
-        <p><a href="{{request.META.HTTP_REFERER}}">Go back</a></p>
-
-            {% regroup plan_activities by week_day.get_name_display as week_day_list %}
-            <ul>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>YOUR TRAVEL PLAN: </strong>{{ plan.name }}</li>
+        <li class="list-group-item"><strong>PLAN DESCRIPTION: </strong>{{ plan.description }}</li>
+        <li class="list-group-item"><strong>CREATED: </strong>{{ plan.created }}</li>
+        <li class="list-group-item text-center">
+            <h3>
+                <img src="/static/travel-logo-design.jpg" alt="travel logo" width="72" height="72">
+                <strong>ITINERARY </strong>
+            </h3>
+        </li>
+    </ul>
+    <table class="table table-striped ml-5">
+        {% regroup plan_activities by week_day.get_name_display as week_day_list %}
             {% for week_day in week_day_list %}
-                <li>
-                    {% filter upper %}
-                    {{ week_day.grouper }}
-                    {% endfilter %}
-                <ul>
+                    <tr>
+                        <th scope="row">
+                            {% filter upper %}
+                            {{ week_day.grouper }}
+                            {% endfilter %}
+                        </th>
+                    </tr>
                     {% for activity in week_day.list %}
-                        <li>
+                        <tr>
+                            <td>
                             {{ activity.get_time_display }}
                             {{ activity.activities.name }}
-                            <a href="{% url 'city_breaks_app:activities-detail' activity.activities.pk %}">Details</a>
-                        </li>
+                            <a href="{% url 'city_breaks_app:activities-detail' activity.activities.pk %} " class="btn btn-warning btn-sm ml-3" role="button" aria-pressed="true" >Details</a>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ul>
-                </li>
             {% empty %}
-                <p>
-                    You have not created any plans or you are not logged in.
-                    <a href="{% url 'auth_ex:login-user' %}?next={{ request.path|urlencode }}">Login</a>
-                </p>
+                <li class="list-group-item">Your plan is empty.</li>
             {% endfor %}
-            </ul>
-    <p><a href="{% url 'city_breaks_app:ask-for-offer' plan.pk %}">Send e-mail with request for offer</a></p>
+    </table>
+    <li class="list-group-item">
+        <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary btn-sm ml-5 my-2" role="button" aria-pressed="true">Go back</a>
+        <a href="{% url 'city_breaks_app:select-activity' %}" class="btn btn-primary btn-sm ml-2 my-2" role="button" aria-pressed="true">Return to activity selection page</a>
+        <a href="{% url 'city_breaks_app:ask-for-offer' plan.pk %}" class="btn btn-success ml-2 my-2" role="button" aria-pressed="true">Ask for offer based on your plan</a>
+    </li>
 {% endblock %}

@@ -6,7 +6,7 @@
     <div class="container mt-5 text-center">
             <h3 class="mb-4">
                 <img src="/static/travel-logo-design.jpg" alt="" width="72" height="72">
-                <u>YOUR TRAVEL PLANS</u>
+                YOUR TRAVEL PLANS
             </h3>
     </div>
     <ul class="list-group">
@@ -14,6 +14,7 @@
                 <li class="list-group-item">
                     <h5>{{ plan.name }}
                         <a href="{% url 'city_breaks_app:travel-plan-details' plan.pk %}" class="btn btn-primary ml-3" role="button" aria-pressed="true">Go to plan</a>
+                        <a href="{% url 'city_breaks_app:ask-for-offer' plan.pk %}" class="btn btn-success ml-1" role="button" aria-pressed="true">Ask for offer based on your plan</a>
                     </h5>
                 </li>
             {% empty %}

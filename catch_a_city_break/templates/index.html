@@ -18,25 +18,25 @@
             <div class="container">
                 <div class="row mb-5">
                     <div class="col-lg-2 col-lg-offset-1 text-center>">
-                    <a href="{% url 'destination-activities' %}" class="btn btn-primary btn-sm">
+                    <a href="{% url 'destination-activities' %}" class="btn btn-info btn-sm">
                         Destinations and activity types</a>
                     </div>
                     <div class="col-lg-2 text-center">
                         <a href="{% url 'city_breaks_app:travel-plan-create' %}?next={{ request.path|urlencode }}"
-                           class="btn btn-primary btn-sm">Create my Travel Plan</a>
+                           class="btn btn-success btn-sm">Create my Travel Plan</a>
                     </div>
                     <div class="col-lg-2 text-center">
                         <a href="{% url 'city_breaks_app:select-activity' %}?next={{ request.path|urlencode }}"
                            class="btn btn-primary btn-sm">Where do you want to go?</a>
                     </div>
                     <div class="col-lg-2 text-center">
-                        <a href="{% url 'city_breaks_app:travel-plans' %}" class="btn btn-primary">Go to my plans</a>
+                        <a href="{% url 'city_breaks_app:travel-plans' %}" class="btn btn-secondary">Go to my plans</a>
                     </div>
                     <div class="col-lg-2 text-center">
-                        <a href="{% url 'auth_ex:login-user' %}" class="btn btn-primary">Login</a>
+                        <a href="{% url 'auth_ex:login-user' %}" class="btn btn-warning">Login</a>
                     </div>
                     <div class="col-lg-2 text-center">
-                        <a href="{% url 'auth_ex:register-user' %}" class="btn btn-primary">Register</a>
+                        <a href="{% url 'auth_ex:register-user' %}" class="btn btn-danger">Register</a>
                     </div>
                 </div>
             </div>
