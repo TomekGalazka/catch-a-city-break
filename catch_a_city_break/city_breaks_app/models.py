@@ -106,8 +106,8 @@ class TravelPlanActivities(models.Model):
         (23, '11:00 PM'),
         (24, '12:00 AM')
     ]
-    travel_plan = models.ForeignKey(TravelPlan, on_delete=models.CASCADE)
-    activities = models.ForeignKey(Activities, on_delete=models.CASCADE)
+    travel_plan = models.ForeignKey(TravelPlan, on_delete=models.CASCADE, null=True)
+    activities = models.ForeignKey(Activities, on_delete=models.CASCADE, null=True)
     # order = models.IntegerField()
     week_day = models.ForeignKey(WeekDay, on_delete=models.CASCADE)
     time = models.IntegerField(choices=HOURS)

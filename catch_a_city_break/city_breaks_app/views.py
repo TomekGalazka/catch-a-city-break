@@ -184,3 +184,20 @@ class AskForOfferView(LoginRequiredMixin, View):
             fail_silently=False,
         )
         return render(request, 'city_breaks_app/ask_for_offer.html')
+
+
+class RemoveActivityFromPlanView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth_ex:login-user')
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        activity_pk = kwargs['activity_pk']
+        plan_pk = kwargs['plan_pk']
+        plan = TravelPlan.objects.get(pk=plan_pk)
+        activity = Activities.objects.get(pk=activity_pk)
+        if user.is_authenticated:
+            remove_activity = plan.travelplanactivities_set.remove(activity)
+            return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': plan.pk}))
+        else:
+            return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': plan.pk}))
+
