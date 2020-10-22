@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import CreateView, DetailView
@@ -11,32 +10,51 @@ from .models import TravelPlan, Activities, TravelPlanActivities, WeekDay
 
 
 class IndexView(View):
+    """
+    Landing page view.
+    """
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
 
 
 class DestinationsActivitiesView(View):
+    """
+    A view that displays currently available destinations.
+    """
     def get(self, request, *args, **kwargs):
         return render(request, 'destinations_activity_types.html')
 
 
 class AboutView(View):
+    """
+    View about the site and author.
+    """
     def get(self, request, *args, **kwargs):
         return render(request, 'about.html')
 
 
 class TravelPlanCreateView(LoginRequiredMixin, CreateView):
+    """
+    View where new Travel Plan is created by user.
+    """
     model = TravelPlan
     fields = ['name', 'description']
     login_url = '/auth/login_user/'
     success_url = reverse_lazy('city_breaks_app:travel-plans')
 
     def form_valid(self, form):
+        """
+        Form is valid is user is a currently logged in user.
+        :return: user
+        """
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
 class TravelPlansView(LoginRequiredMixin, View):
+    """
+    Displays all currently created plans by logged in user.
+    """
     login_url = reverse_lazy('auth_ex:login-user')
 
     def get(self, request, *args, **kwargs):
@@ -51,6 +69,9 @@ class TravelPlansView(LoginRequiredMixin, View):
 
 
 class TravelPlanDetailView(LoginRequiredMixin, View):
+    """
+    Displays the details of selected user Travel Plan.
+    """
     login_url = reverse_lazy('auth_ex:login-user')
 
     def get(self, request, *args, **kwargs):
@@ -69,6 +90,9 @@ class TravelPlanDetailView(LoginRequiredMixin, View):
 
 
 class ActivitySelectView(LoginRequiredMixin, View):
+    """
+    Displays a form with currently available activities. Activities can be added to selected user Travel Plan.
+    """
     login_url = reverse_lazy('auth_ex:login-user')
 
     def get(self, request, *args, **kwargs):
@@ -91,6 +115,9 @@ class ActivitySelectView(LoginRequiredMixin, View):
 
 
 class AddActivityToPlanView(LoginRequiredMixin, View):
+    """
+    Adds selected activity to chosen user Travel Plan.
+    """
     login_url = reverse_lazy('auth_ex:login-user')
 
     def get(self, request, *args, **kwargs):
@@ -127,6 +154,9 @@ class AddActivityToPlanView(LoginRequiredMixin, View):
 
 
 class ActivityDetailsView(LoginRequiredMixin, DetailView):
+    """
+    Displays the details of selected Activity.
+    """
     model = Activities
     login_url = reverse_lazy('auth_ex:login-user')
 
@@ -138,6 +168,10 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
 
 
 class AskForOfferView(LoginRequiredMixin, View):
+    """
+    Sends e-mail from user to web app owner, with a request for an offer. Attached to the email is a file with chosen
+    user travel plan.
+    """
     login_url = reverse_lazy('auth_ex:login-user')
 
     def get(self, request, *args, **kwargs):

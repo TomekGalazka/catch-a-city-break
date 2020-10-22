@@ -46,6 +46,9 @@ class LoginUserView(FormView):
 
 
 class LogoutUserView(View):
+    """
+    Allows to logout a currently logged in user.
+    """
     def get(self, request, *args, **kwargs):
         logout(request)
         return render(request, 'auth_ex/logout.html')

@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, Textarea
 
@@ -7,6 +6,9 @@ from .models import TravelPlan, Activities, TravelPlanActivities
 
 
 class CreateTravelPlanForm(ModelForm):
+    """
+    Creates a new Travel Plan by user.
+    """
     class Meta:
         model = TravelPlan
         fields = ['name', 'description']
@@ -15,11 +17,18 @@ class CreateTravelPlanForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """
+        Overwrites __init__ method to add widget attributes to form fields.
+        """
         super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update({'class': 'form-control mb-3 mb-3'})
         self.fields['description'].widget.attrs.update({'class': 'form-control mb-3'})
 
     def clean(self):
+        """
+        Overwrites clean method and checks if new Travel Plan name was already created by user.
+        :return: ValidationError, if there is any.
+        """
         cleaned_data = super().clean()
         new_plan_name = cleaned_data['name']
 
@@ -28,6 +37,10 @@ class CreateTravelPlanForm(ModelForm):
 
 
 class ActivitySelectForm(forms.Form):
+    """
+    Allows user to browse through available activities, based on chosen city and activity type. Activity can be later
+    added to one of users Travel Plans.
+    """
     WARSAW = 'WAR'
     KRAKOW = 'KRK'
     GDANSK = 'GDA'
@@ -50,6 +63,9 @@ class ActivitySelectForm(forms.Form):
 
 
 class AddActivityToPlan(forms.Form):
+    """
+    Adds selected activity to chosen user Travel Plan.
+    """
     MONDAY = 'MON'
     TUESDAY = 'TUE'
     WEDNESDAY = 'WED'
@@ -101,6 +117,11 @@ class AddActivityToPlan(forms.Form):
     time.widget.attrs.update({'class': 'form-control mb-2 mr-sm-2'})
 
     def __init__(self, *args, **kwargs):
+        """
+        Overwrites __init__ method, so currently logged in user and chosen activity 'pk' are callable in form clean
+        method.
+        :param kwargs: user, activity_id
+        """
         self.user = kwargs.pop('user')
         self.activity_id = kwargs.pop('activity_id')
         super().__init__(*args, **kwargs)
@@ -109,6 +130,13 @@ class AddActivityToPlan(forms.Form):
             self.fields['travel_plan'].queryset = TravelPlan.objects.filter(user=self.user)
 
     def clean(self):
+        """
+        Overwrites clean method by raising ValidationError if:
+        -user tries to add the same activity to plan twice
+        -user tries to add activity to plan from another city, while he already choose a city
+        -user tries to add second activity to the same day and same hour
+        :return: ValidationError
+        """
         cleaned_data = super().clean()
         travel_plan = cleaned_data['travel_plan']
         week_day = cleaned_data['week_day']

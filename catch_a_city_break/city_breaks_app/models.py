@@ -6,6 +6,9 @@ User = get_user_model()
 
 
 class Activities(models.Model):
+    """
+    Model represents various activities that user can add to his Travel Plan.
+    """
     WARSAW = 'WAR'
     KRAKOW = 'KRK'
     GDANSK = 'GDA'
@@ -32,6 +35,9 @@ class Activities(models.Model):
 
 
 class TravelPlan (models.Model):
+    """
+    Model represents a Travel Plan that can be created by user.
+    """
     name = models.CharField(max_length=256)
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -43,6 +49,9 @@ class TravelPlan (models.Model):
 
 
 class WeekDay(models.Model):
+    """
+    Model represents a day in a week. User decides on which day he wants to add certain activity to his travel plan.
+    """
     MONDAY = 'MON'
     TUESDAY = 'TUE'
     WEDNESDAY = 'WED'
@@ -67,6 +76,10 @@ class WeekDay(models.Model):
 
 
 class TravelPlanActivities(models.Model):
+    """
+    Model represents which activity is to be added to which travel plan. Additionally, the hour of activity booking
+    can be specified.
+    """
     HOURS = [
         (1, '1:00 AM'),
         (2, '2:00 AM'),

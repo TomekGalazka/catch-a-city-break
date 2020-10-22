@@ -7,6 +7,9 @@ User = get_user_model()
 
 
 class RegisterUserForm(forms.Form):
+    """
+    Form to create a new user.
+    """
     username = forms.CharField(label='Username:')
     email = forms.EmailField(widget=forms.EmailInput, label='E-mail:')
     password = forms.CharField(widget=forms.PasswordInput, label='Password:')
@@ -18,6 +21,10 @@ class RegisterUserForm(forms.Form):
     repeat_password.widget.attrs.update({'class': 'form-control mb-3'})
 
     def clean(self):
+        """
+        Overwrite clean method to check if there are any errors.
+        :return: ValidationError, if there is any.
+        """
         cleaned_data = super().clean()
         username = cleaned_data['username']
         email = cleaned_data['email']
@@ -38,6 +45,9 @@ class RegisterUserForm(forms.Form):
 
 
 class LoginUserForm(forms.Form):
+    """
+    Form to login existing user.
+    """
     username = forms.CharField(label='Username:')
     password = forms.CharField(widget=forms.PasswordInput, label='Password:')
 
@@ -45,6 +55,10 @@ class LoginUserForm(forms.Form):
     password.widget.attrs.update({'class': 'form-control mb-3'})
 
     def clean(self):
+        """
+        Overwrite clean method to check if there are any errors.
+        :return: ValidationError, if user is not authenticated.
+        """
         cleaned_data = super().clean()
         username = cleaned_data['username']
         password = cleaned_data['password']
