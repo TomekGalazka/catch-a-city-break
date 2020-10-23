@@ -4,6 +4,6 @@
 
 {% block body %}
 
-    <p><a href="{{request.META.HTTP_REFERER}}">Go back</a></p>
+    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary btn-sm ml-5 my-2" role="button" aria-pressed="true">Go back</a>
 
 {% endblock %}

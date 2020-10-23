@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import CreateView, DetailView
 from django.urls import reverse_lazy, reverse
 
-from .forms import ActivitySelectForm, AddActivityToPlan
+from .forms import ActivitySelectForm, AddActivityToPlan, CreateTravelPlanForm
 from .models import TravelPlan, Activities, TravelPlanActivities, WeekDay
 
 
@@ -37,8 +37,8 @@ class TravelPlanCreateView(LoginRequiredMixin, CreateView):
     """
     View where new Travel Plan is created by user.
     """
-    model = TravelPlan
-    fields = ['name', 'description']
+    form_class = CreateTravelPlanForm
+    template_name = 'city_breaks_app/travelplan_form.html'
     login_url = '/auth/login_user/'
     success_url = reverse_lazy('city_breaks_app:travel-plans')
 
@@ -150,7 +150,11 @@ class AddActivityToPlanView(LoginRequiredMixin, View):
             register_activity.user.add(user)
             return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': travel_plan.pk}))
         else:
-            return redirect(reverse('city_breaks_app:add-activity-to-plan', kwargs={'activity_id': chosen_activity_id}))
+            ctx = {
+                'form': form,
+                'chosen_activity': chosen_activity_id
+            }
+            return render(request, 'city_breaks_app/add_activity_to_plan.html', ctx)
 
 
 class ActivityDetailsView(LoginRequiredMixin, DetailView):
@@ -199,8 +203,7 @@ class RemoveActivityFromPlanView(LoginRequiredMixin, View):
         plan = TravelPlan.objects.get(pk=plan_pk)
         activity = Activities.objects.get(pk=activity_pk)
         if user.is_authenticated:
-            # TravelPlanActivities.objects.filter(travel_plan=plan, activities=activity).remove()
-            plan.travelplanactivities_set.remove(activity)
+            plan.activities.remove(activity)
             return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': plan.pk}))
         else:
             return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': plan.pk}))

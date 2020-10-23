@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, Textarea
 
-from .models import TravelPlan, Activities
+from .models import TravelPlan, Activities, WeekDay
 
 
 class CreateTravelPlanForm(ModelForm):
@@ -31,8 +31,9 @@ class CreateTravelPlanForm(ModelForm):
         """
         cleaned_data = super().clean()
         new_plan_name = cleaned_data['name']
-
-        if new_plan_name == TravelPlan.objects.filter(name=new_plan_name):
+        # import pdb
+        # pdb.set_trace()
+        if TravelPlan.objects.filter(name__icontains=new_plan_name).exists():
             raise ValidationError('Such plan name already exist. Please choose another name for your plan.')
 
 
@@ -66,22 +67,6 @@ class AddActivityToPlan(forms.Form):
     """
     Adds selected activity to chosen user Travel Plan.
     """
-    MONDAY = 'MON'
-    TUESDAY = 'TUE'
-    WEDNESDAY = 'WED'
-    THURSDAY = 'THU'
-    FRIDAY = 'FRI'
-    SATURDAY = 'SAT'
-    SUNDAY = 'SUN'
-    DAYS = [
-        (MONDAY, 'Monday'),
-        (TUESDAY, 'Tuesday'),
-        (WEDNESDAY, 'Wednesday'),
-        (THURSDAY, 'Thursday'),
-        (FRIDAY, 'Friday'),
-        (SATURDAY, 'Saturday'),
-        (SUNDAY, 'Sunday'),
-    ]
     HOURS = [
         (1, '1:00 AM'),
         (2, '2:00 AM'),
@@ -109,7 +94,7 @@ class AddActivityToPlan(forms.Form):
         (24, '12:00 AM')
     ]
     travel_plan = forms.ModelChoiceField(queryset=TravelPlan.objects.all(), initial='')
-    week_day = forms.ChoiceField(widget=forms.Select, choices=DAYS, initial='MON')
+    week_day = forms.ModelChoiceField(queryset=WeekDay.objects.all())
     time = forms.ChoiceField(widget=forms.Select, choices=HOURS, initial='8')
 
     travel_plan.widget.attrs.update({'class': 'form-control mb-2 mr-sm-2'})
@@ -153,8 +138,7 @@ class AddActivityToPlan(forms.Form):
                 if activity.city not in plan.activities.city:
                     raise ValidationError('Once you choose a city you cannot simply teleport to another!')
 
-        for plan in plan_activities:
-            if week_day == plan.week_day and time == plan.time:
-                raise ValidationError(
-                    "You've already assigned an activity for this day and this hour. Please choose another."
-                )
+        if plan_activities.filter(week_day=week_day, time=time).exists():
+            raise ValidationError(
+                "You've already assigned an activity for this day and this hour. Please choose another."
+            )

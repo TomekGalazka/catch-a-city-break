@@ -52,13 +52,13 @@ class WeekDay(models.Model):
     """
     Model represents a day in a week. User decides on which day he wants to add certain activity to his travel plan.
     """
-    MONDAY = 'MON'
-    TUESDAY = 'TUE'
-    WEDNESDAY = 'WED'
-    THURSDAY = 'THU'
-    FRIDAY = 'FRI'
-    SATURDAY = 'SAT'
-    SUNDAY = 'SUN'
+    MONDAY = 'Monday'
+    TUESDAY = 'Tuesday'
+    WEDNESDAY = 'Wednesday'
+    THURSDAY = 'Thursday'
+    FRIDAY = 'Friday'
+    SATURDAY = 'Saturday'
+    SUNDAY = 'Sunday'
     DAYS = [
         (MONDAY, 'Monday'),
         (TUESDAY, 'Tuesday'),
@@ -68,7 +68,7 @@ class WeekDay(models.Model):
         (SATURDAY, 'Saturday'),
         (SUNDAY, 'Sunday'),
     ]
-    name = models.CharField(max_length=3, choices=DAYS)
+    name = models.CharField(max_length=9, choices=DAYS)
     order = models.IntegerField(unique=True)
 
     def __str__(self):

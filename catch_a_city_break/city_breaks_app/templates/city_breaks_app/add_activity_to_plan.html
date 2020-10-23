@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 
     {% block body %}
-
-        {% if form.errors %}
-            {% for field in form %}
-                {% for error in field.errors %}
+        <div class="container mt-5">
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div>
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
                     <div>
                         <strong>{{ error|escape }}</strong>
                     </div>
                 {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <div>
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
+            {% endif %}
+        </div>
         <div class="container mt-5">
             <h4 class="mb-3 font-weight-normal">
                 <img src="/static/travel-logo-design.jpg" alt="" width="72" height="72">
@@ -26,8 +27,8 @@
             <form action="" method="post" class="form-inline">
                 {% csrf_token %}
                 {{ form }}
+                <button type="submit" class="btn btn-success mb-2">Add activity</button>
             </form>
-            <button type="submit" class="btn btn-success mb-2">Add activity</button>
         </div>
         <div class="container">
             <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary btn-sm mb-5" role="button" aria-pressed="true">Go back</a>
