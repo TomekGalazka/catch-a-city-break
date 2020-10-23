@@ -108,7 +108,6 @@ class TravelPlanActivities(models.Model):
     ]
     travel_plan = models.ForeignKey(TravelPlan, on_delete=models.CASCADE, null=True)
     activities = models.ForeignKey(Activities, on_delete=models.CASCADE, null=True)
-    # order = models.IntegerField()
     week_day = models.ForeignKey(WeekDay, on_delete=models.CASCADE)
     time = models.IntegerField(choices=HOURS)
     user = models.ManyToManyField(User)

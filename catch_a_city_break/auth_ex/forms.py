@@ -40,7 +40,7 @@ class RegisterUserForm(forms.Form):
             if username == user.username:
                 raise ValidationError('This user already exists. Please choose another name.')
 
-        if '@' not in email:
+        if '@' and '.' not in email:
             raise ValidationError('Please provide a valid e-mail address.')
 
 

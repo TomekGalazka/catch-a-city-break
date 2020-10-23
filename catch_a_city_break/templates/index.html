@@ -9,7 +9,7 @@
             <img src="/static/travel-logo-design.jpg" width="400" height="400"
                         class="d-inline-block align-top rounded-circle" alt="Site logo">
 
-              <h5 class="card-title mb-4">At the <strong>'Catch A City Break'</strong> exciting trips wait for you just around the corner!</h5>
+              <h5 class="card-title mb-4">At the <strong>'Catch A City Break'</strong> exciting trips are waiting for you just around the corner!</h5>
             <p class="card-text mb-5 text-justify">You're just a few steps from your dream vacation. First, register and login.
                 Then, create your travel plan and voila! You're ready to go. Browse in various activities we prepared
                 for you and when you're ready click 'Ask for offer' button on your travel plan subpage.
@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-lg-2 text-center">
                         <a href="{% url 'city_breaks_app:travel-plan-create' %}?next={{ request.path|urlencode }}"
-                           class="btn btn-success btn-sm">Create my Travel Plan</a>
+                           class="btn btn-warning btn-sm">Create my Travel Plan</a>
                     </div>
                     <div class="col-lg-2 text-center">
                         <a href="{% url 'city_breaks_app:select-activity' %}?next={{ request.path|urlencode }}"
@@ -33,7 +33,7 @@
                         <a href="{% url 'city_breaks_app:travel-plans' %}" class="btn btn-secondary">Go to my plans</a>
                     </div>
                     <div class="col-lg-2 text-center">
-                        <a href="{% url 'auth_ex:login-user' %}" class="btn btn-warning">Login</a>
+                        <a href="{% url 'auth_ex:login-user' %}" class="btn btn-success">Login</a>
                     </div>
                     <div class="col-lg-2 text-center">
                         <a href="{% url 'auth_ex:register-user' %}" class="btn btn-danger">Register</a>

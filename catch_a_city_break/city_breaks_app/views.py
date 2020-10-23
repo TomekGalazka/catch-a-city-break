@@ -187,6 +187,9 @@ class AskForOfferView(LoginRequiredMixin, View):
 
 
 class RemoveActivityFromPlanView(LoginRequiredMixin, View):
+    """
+    Removes activity from relation with chosen user Travel Plan.
+    """
     login_url = reverse_lazy('auth_ex:login-user')
 
     def get(self, request, *args, **kwargs):
@@ -196,7 +199,8 @@ class RemoveActivityFromPlanView(LoginRequiredMixin, View):
         plan = TravelPlan.objects.get(pk=plan_pk)
         activity = Activities.objects.get(pk=activity_pk)
         if user.is_authenticated:
-            remove_activity = plan.travelplanactivities_set.remove(activity)
+            # TravelPlanActivities.objects.filter(travel_plan=plan, activities=activity).remove()
+            plan.travelplanactivities_set.remove(activity)
             return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': plan.pk}))
         else:
             return redirect(reverse('city_breaks_app:travel-plan-details', kwargs={'plan_id': plan.pk}))
