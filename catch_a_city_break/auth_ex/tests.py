@@ -1,23 +1,46 @@
 import pytest
 from django.test import TestCase
 from django.contrib.auth.models import User
+from auth_ex.forms import RegisterUserForm
+from django.urls import reverse_lazy
 
 
-# @pytest.mark.django_db
-# def test_register_user(client, django_user_model):
-#     username = 'DonaldTrump'
-#     email = 'rurek123@op.pl'
-#     password = 'qwerty'
-#     user = django_user_model.objects.get(username=username)
-#     with pytest.raises(ValueError):
-#         if user in django_user_model.objects.all():
-#     # django_user_model.objects.create_user(
-#     #     username=username,
-#     #     email=email,
-#     #     password=password,
-#     # )
-#     # user = django_user_model.objects.get(username=username)
-#     # assert user in django_user_model.objects.all()
+@pytest.mark.django_db
+def test_register_user(client):
+    data = {
+        'username': 'DonaldTrump',
+        'email': 'rurek123@op.pl',
+        'password': 'qwerty',
+        'repeat_password': 'qwerty'
+    }
+    form = RegisterUserForm(data)
+    assert form.is_valid()
+
+    response = client.post('/auth/register_user/', data)
+    assert response.status_code == 302
+    all_users = User.objects.all()
+
+    assert all_users.filter(username=data['username']).exists()
+        # import pdb
+        # pdb.set_trace()
+
+
+@pytest.mark.django_db
+def test_login(client):
+    user = User.objects.create_user(username='DonaldTrump', password='123')
+    client.force_login(user)
+    response = client.get(reverse_lazy('city_breaks_app:travel-plan-create'))
+    assert response.status_code == 200
+
+
+
+    # django_user_model.objects.create_user(
+    #     username=username,
+    #     email=email,
+    #     password=password,
+    # )
+    # user = django_user_model.objects.get(username=username)
+    # assert user in django_user_model.objects.all()
 
 
 # @pytest.mark.parametrize('key', [

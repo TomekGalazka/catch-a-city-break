@@ -72,7 +72,7 @@ class WeekDay(models.Model):
     order = models.IntegerField(unique=True)
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
 
 class TravelPlanActivities(models.Model):
